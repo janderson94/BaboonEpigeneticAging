@@ -1,3 +1,3 @@
 # BaboonEpigeneticAging
 
-![Test](./misc/README_temp.txt)
+![Test](./misc/README_temp.JPG)
