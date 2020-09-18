@@ -1,6 +1,6 @@
 ![Test](./misc/README_temp.JPG)
 
-# Baboon Epigenetic Aging (Anderson and Johnston et al. 2020, in Revision)
+# Baboon Epigenetic Aging (Anderson and Johnston et al. 2020, _in revision_)
 
 This repository holds the code used to analyze the data from, and recreate the results in, _Anderson and Johnston et al. 2020_ (cite). These scripts include,
 
