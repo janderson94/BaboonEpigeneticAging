@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-#SBATCH --get-user-env
 
+#This R script further filters the sites from get_data_CHROM.sh based on mean methratio and coverage.
 library(data.table)
 data=fread('all_mratios_CHROMNAME_v2.txt',header=F)
 data[,V9:=paste(data[,V1],data[,V2],sep="_")]
