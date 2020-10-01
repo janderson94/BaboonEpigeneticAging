@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --get-user-env
 
 #An updated version of TrimGalore is required.
 #A functional version of Cutadapt and optionally FastQC are required for TrimGalore.
