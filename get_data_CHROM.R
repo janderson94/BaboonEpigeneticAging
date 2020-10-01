@@ -55,7 +55,7 @@ write.table(mratios2,"methratio_CHROMNAME.txt",row.names=F,col.names=F,sep="\t")
 write.table(mcounts2,file="mcounts_table_CHROMNAME.txt",row.names=F,sep="\t")
 write.table(counts2,file="counts_table_CHROMNAME.txt",row.names=F,sep="\t")
 
-# write out summaries if interested in having
+# write out summaries if desired
 info=cbind(counts2$site,mratios2$avg,mratios2$depth)
 # order = site ,mean mratio, and depth
 write.table(info,"info_CHROMNAME.txt",row.names=F,sep="\t")
