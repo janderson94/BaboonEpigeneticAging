@@ -37,13 +37,13 @@ mratios<-counts
 mratios[,2:(length(names)+1)]<-mcounts[,2:(length(names)+1)]/counts[,2:(length(names)+1)]
 
 #Calculate mean mratio, sd, and avg coverage
-#Note that the SD filter here is not stringent, and could be much more strict.
+#Note that the filters here are not stringent, and could be much more strict.
 #Depending on sample size and computational capacity, more stringent filtering could be done.
-#Alternatively, if CpG sites are low quality (e.g. low depth, low variance), they will simply
+#Alternatively, if CpG sites are low quality (e.g. low coverage), they will simply not be weighted in the model
 mratios$avg=apply(mratios[,2:(length(names)+1)],1,mean,na.rm=TRUE)
 mratios$depth<-apply(counts[,2:(length(names)+1)],1,mean,na.rm=TRUE)
 
-#Filte
+#Filter
 mratios2<-subset(mratios,avg<.9 & avg>.1 & depth >5)
 mcounts2<-mcounts[site %in%mratios2$site]
 counts2<-counts[site %in%mratios2$site]
@@ -55,7 +55,7 @@ write.table(mratios2,"methratio_CHROMNAME.txt",row.names=F,col.names=F,sep="\t")
 write.table(mcounts2,file="mcounts_table_CHROMNAME.txt",row.names=F,sep="\t")
 write.table(counts2,file="counts_table_CHROMNAME.txt",row.names=F,sep="\t")
 
-# write out summaries
+# write out summaries if interested in having
 info=cbind(counts2$site,mratios2$avg,mratios2$depth)
 # order = site ,mean mratio, and depth
 write.table(info,"info_CHROMNAME.txt",row.names=F,sep="\t")
