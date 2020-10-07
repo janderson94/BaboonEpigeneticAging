@@ -1,0 +1,37 @@
+###############################################
+#Test for enrichment of clock sites in a genomic region of interest. Here, the genomic region of interest is gene enhancers. 
+###############################################
+#Specify CpG subsets that will be tested for enrichment (i.e., the clock sites that increase or decrease in methylation with age), and specify the background set of all CpG sites
+hypersites=hyperweights459 #"hypersites" are sites that increase in methylation with age
+hyposites=hypoweights134 #"hyposites" are sites that decrease in methylation with age
+allsites=meanweights450k #background set of sites; this is set of all sites that were input into glmnet to potentially be included in the clock
+
+#Perform lift over of baboon (Panu2) coordinates to hg38
+liftOver ${hypersites}.bed papAnu2ToHg38.over.chain ${hypersites}Hg38.txt unmappedhypersitesHg38.bed
+liftOver ${hyposites}.bed papAnu2ToHg38.over.chain ${hyposites}Hg38.txt unmappedhypositesHg38.bed
+liftOver ${allsites}.bed papAnu2ToHg38.over.chain ${allsites}Hg38.txt unmappedallsitesHg38.bed
+
+#Determine which CpG sites overlap genomic region of interest 
+bedtools coverage -b ${hyposites}.bed -a enhancers_chroms.bed > enhancers_cov_hyposites.txt 
+bedtools coverage -b ${hypersites}.bed -a enhancers_chroms.bed > enhancers_cov_hypersites.txt 
+bedtools coverage -b ${allsites}.bed -a enhancers_chroms.bed > enhancers_cov_mysites2.txt 
+
+#Test hyper sites enrichment in enhancers:
+features<-read.table("enhancers_cov_hypersites.txt",sep="\t")
+aa=length(which(features[,5]>=1)) #number of hyper sites that overlap at least 1 enhancer
+bb=length(which(features[,5]<1)) #number of hyper sites that do not overlap any enhancers
+features1<-read.table("enhancers_cov_mysites2.txt",sep="\t")
+cc=length(which(features1[,5]>=1)) #number of background sites that overlap at least 1 enhancer
+dd=length(which(features1[,5]<1)) #number of background sites that do not overlap any enhancers
+values = matrix(c(aa,bb,cc-aa,dd-bb), nrow = 2) #create contingency matrix
+this<-fisher.test(values,alternative="two.sided") #perform two-sided Fisher's exact test
+
+#Test hypo sites enrichment in enhancers:
+features<-read.table("enhancers_cov_hyposites.txt",sep="\t")
+aa=length(which(features[,5]>=1)) #number of hypo sites that overlap at least 1 enhancer
+bb=length(which(features[,5]<1)) #number of hypo sites that do not overlap any enhancers
+features1<-read.table("enhancers_cov_mysites2.txt",sep="\t")
+cc=length(which(features1[,5]>=1)) #number of background sites that overlap at least 1 enhancer
+dd=length(which(features1[,5]<1)) #number of background sites that do not overlap any enhancers
+values = matrix(c(aa,bb,cc-aa,dd-bb), nrow = 2) #create contingency matrix
+this<-fisher.test(values,alternative="two.sided") #perform two-sided Fisher's exact test

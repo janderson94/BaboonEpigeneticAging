@@ -1,0 +1,14 @@
+#!/usr/bin/env Rscript
+
+#Read in meta file (like the one provided in this repository)
+info<-read.table("./meta_info.txt",header=T)
+
+
+#Plot predicted age versus chronological age for males and females
+
+
+
+
+
+
+
