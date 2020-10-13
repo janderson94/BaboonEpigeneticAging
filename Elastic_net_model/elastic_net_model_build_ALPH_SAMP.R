@@ -1,20 +1,36 @@
 #!/usr/bin/env Rscript
 
-#Elastic net models are build using glmnet
+#############################################################
+#Elastic net model building
+#############################################################
+#Requires
+#R
+#library glmnet
+
+#This script builds leave-one-out models designed for parallelizing across samples (SAMP) and alpha values (ALPH).
+#Each combination of sample and alpha value becomes it's own R script.
+
 library(glmnet)
 
-#Read in imputed mratios
-epi<-read.table("all_methratios_imputed_450k_n277.txt",header=T,row.names=1)
+#############
+#Read in data
+#############
+#Read in imputed mratios (output from impute.R)
+epi<-read.table("all_methratios_imputed.txt",header=T,row.names=1)
 
 #Read in metainfo with known chronological ages
 info<-read.table("age_info.txt",header=T)
 
-#Using alpha=ALPHA
+
+##########################
+#Data Normalization
+##########################
+#Using alpha=ALPH
 #Quantile normalize mratios by column (sample)
 norm_counts<-as.matrix(apply(epi,2,function(x){return(qqnorm(x,plot=F)$x)}))
 
 #Remove test subject(s)
-#"SAMP" indexes from 1 to N samples
+#SAMP indexes from 1 to N samples
 norm_train<-norm_counts[,-SAMP]
 norm_test<-norm_counts[,SAMP]
 
@@ -45,6 +61,11 @@ for (d in 1:length(testreads_normalized)){
   testreads_normalized[d]<-qnorm(probs)
 }
 
+
+
+###########################
+#Elastic-net model building
+###########################
 #Using N-fold internal CV, train the elastic net model using the training data
 #Note with larger sample sizes, N-fold internal CV becomes intractable
 model<-cv.glmnet(trainreads_norm,trainage,nfolds=276,alpha=ALPH,standardize=F)
