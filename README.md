@@ -12,3 +12,5 @@ This repository holds the code used to analyze the data from, and recreate the r
   
   (iv) Enrichment analysis of clock sites (Enrichment_analyses).  
 
+
+We also include simulations related to a comment that came up during review regarding the importance of controlling for age structure in predicted epigenetic ages (Simulations_for_reviewers).
