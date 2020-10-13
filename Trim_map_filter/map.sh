@@ -14,7 +14,7 @@
 #Trimming
 ###################
 #Path to TrimGalore software
-trim_galore_path='path_to_trimming_software'
+trim_galore_path='path_to_trim_galore'
 
 #-a can specify adaptors, if known, otherwise adaptors will be automatically identified from known lists of possible adaptor sequences (e.g. standard illumina adaptors shown here)
 #--length specifies minimum length for retaining reads
@@ -49,11 +49,11 @@ bsmap_path/bsmap -a $path_fastq -d $path_genome -o $path_sam -v 0.1 -r 0
 #Calling methratios
 ###################
 #Path to methratio.py script from BSMAP
-path_to_methratio.py='path_to/methratio.py'
+path_to_methratio.py='path_to_methratio.py'
 
 #Path to desired methratio output file
 path_out=FILE.methratio.txt
 
 #--context=CG will only return mratio calls at CpG dinucleotides, the vast majority of the locations of DNA methylation in baboons (and many primates, as far as we know)
 #--combine-CpG will combine mratio call information from both strands
-python path_to_methratio.py -o $path_out -d $path_genome --combine-CpG --context=CG $path_sam
+python path_to_methratio.py/methratio.py -o $path_out -d $path_genome --combine-CpG --context=CG $path_sam
