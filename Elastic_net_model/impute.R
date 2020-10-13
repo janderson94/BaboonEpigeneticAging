@@ -6,23 +6,32 @@
 #Requires 
 #R
 #libraries impute and data.table
-
 library(data.table)
-
-all<-fread("all_methratios.txt")
-
-missing<-apply(all,1,function(x){length(which(is.na(x)))})
-
-#Want to remove sites missing in >5% of the data for the purposes of elastic net efficiency
-all2<-all[missing<14,]
-rownames(all2)<-all2$site
-all2$site<-NULL
-
 library(impute)
 
-#Save the imputed, missing methylation ratios
+#Load in the combined set of sites output from get_data_CHROM.R across, concatenated into one file "all_methratios.txt"
+all<-fread("all_methratios.txt")
+
+
+
+##################################################
+#Final filter based on missingness for elastic net
+##################################################
+
+#Calculate the number of missing methratio calls per site
+missing<-apply(all,1,function(x){length(which(is.na(x)))})
+
+#Remove sites missing in >5% of the data
+all2<-all[missing<14,]
+rownames(all2)<-all2$site; all2$site<-NULL
+
+
+
+##################################################
+#Impute using default k-nearest neighbors approach
+##################################################
 all_imputed<-impute.knn(as.matrix(all2))$data
 
 #Write out impute mratios for elastic net modeling
-write.table(all_imputed,"all_methratios_imputed_450k_n277.txt",quote=F,row.names=T,col.names=T)
+write.table(all_imputed,"all_methratios_imputed.txt",quote=F,row.names=T,col.names=T)
 
