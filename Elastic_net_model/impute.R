@@ -1,6 +1,12 @@
 #!/usr/bin/env Rscript
 
-#Requires libraries impute and data.table
+#############################################################
+#Impute missing methratio calls prior to elastic net modeling
+#############################################################
+#Requires 
+#R
+#libraries impute and data.table
+
 library(data.table)
 
 all<-fread("all_methratios.txt")
