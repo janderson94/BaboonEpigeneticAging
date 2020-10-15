@@ -30,7 +30,8 @@ simcor <- function (x, ymean=MEAN, ysd=SD, correlation=0) {
 ###############################################################
 ##The data frame "data" loaded in here is a slice of SI Table 1
 ##It focuses on males from the main N=277 model 
-load("./Simulations_for_reviewers/.RData")
+#Load the RData from the directory where this Simulation folder is cloned.
+load("./.RData")
 head(data)
 
 #Here we show that if a variable is correlated with chronological age, like raw BMI is,
