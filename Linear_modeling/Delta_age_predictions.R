@@ -65,10 +65,8 @@ dif_pred<-info2$Predicted_epi_age[seq(2,60,2)]-info2$Predicted_epi_age[seq(1,59,
 dif_age<-info2$Age[seq(2,60,2)]-info2$Age[seq(1,59,2)]
 sex<-info2$Sex[seq(2,60,2)]
 
-#Update line 132
 summary(lm(dif_pred~dif_age+sex))
 
-#Update line 133 also
 mean(dif_pred-dif_age)
 sd(dif_pred-dif_age)
 
@@ -99,7 +97,6 @@ out<-cor.test(info$Predicted_epi_age[f],info$Age[f]);out$estimate;out$p.value
 
 
 #Sex differences in absolute differences
-#Line 138 says 4.35 not 4.37 (just a result of rounding in the SI table)
 wilcox.test(x = abs(info$Predicted_epi_age[m]-info$Age[m]),
             abs(info$Predicted_epi_age[f]-info$Age[f]))
 
@@ -140,7 +137,7 @@ cor.test(info$BMI[info$Sex=="M"],
 library(segmented)
 
 
-##Include code for how we get Age.adjusted.BMI
+##Include code for how we get Age.adjusted.BMI #RAJ this needs to be added
 ##It is however a slightly stochastic process so use our stored values in info to recreate our exact results
 
 
@@ -195,7 +192,6 @@ info_males$rank_no_bmi<-NA
 
 info_males$rank_no_bmi[as.numeric(names(residuals(lm(info_males$Rank~info_males$BMI))))]<-residuals(lm(info_males$Rank~info_males$BMI))
 
-#Edit line 215 + SI Table 5 to 9.93 from 9.95 (again SI rounding difference)
 summary(lm(info_males$delta_age~info_males$Cumulative.Early.Adversity.Score+
              info_males$rank_no_bmi+
              info_males$Age.adjusted.BMI+
@@ -236,7 +232,7 @@ info_males$rank_no_age<-NA
 info_males$rank_no_age[as.numeric(names(residuals(lm(info_males$Rank~info_males$Age))))]<-
   residuals(lm(info_males$Rank~info_males$Age+ info_males$age_squared))
 
-#No rank remains marginally significant, and rank-for-age is not found to be significant
+#No-- rank remains marginally significant, and rank-for-age is not found to be significant
 summary(lm(info_males$delta_age~info_males$Cumulative.Early.Adversity.Score+
              info_males$Rank+
              info_males$Age.adjusted.BMI+
@@ -327,17 +323,6 @@ dif_residual_age<-info3$residual_age[seq(2,28,2)]-info3$residual_age[seq(1,27,2)
 summary(lm(dif_residual_age~dif_rank))
 
 
-###Lines 284
-#Does change in rank for age?
-dif_rank_for_age<-info3$rank_no_age[seq(2,28,2)]-info3$rank_no_age[seq(1,27,2)]
-
-#It kind of does now. 
-#Too correlated to model...
-summary(lm(dif_residual_age~dif_rank_for_age+dif_rank))
-plot(dif_rank~dif_rank_for_age)
-summary(lm(dif_rank~dif_rank_for_age))
-
-
 #Differences in BMI
 dif_bmi<-info3$BMI[seq(2,28,2)]-info3$BMI[seq(1,27,2)]
 dif_residual_age<-info3$residual_age[seq(2,28,2)]-info3$residual_age[seq(1,27,2)]
@@ -346,7 +331,6 @@ summary(lm(dif_residual_age~dif_bmi))
 
 
 #Rank controlling for BMI
-#Same result but because of rounding change line 290 to .167
 dif_rank_no_bmi<-info3$rank_no_bmi[seq(2,28,2)]-info3$rank_no_bmi[seq(1,27,2)]
 
 summary(lm(dif_residual_age~dif_rank_no_bmi))
