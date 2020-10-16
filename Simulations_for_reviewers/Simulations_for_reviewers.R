@@ -30,7 +30,8 @@ simcor <- function (x, ymean=MEAN, ysd=SD, correlation=0) {
 ###############################################################
 ##The data frame "data" loaded in here is a slice of SI Table 1
 ##It focuses on males from the main N=277 model 
-load("./Simulations_for_reviewers/.RData")
+#Load the RData from the directory where this Simulation folder is cloned.
+load("./.RData")
 head(data)
 
 #Here we show that if a variable is correlated with chronological age, like raw BMI is,
@@ -47,7 +48,7 @@ abline(lm(data$delta_age~data$age),lty=2)
 plot(data$BMI~data$age,pch=20,xlab="Chronological age (years)",ylab="BMI")
 
 #The age structure in both delta age and BMI produce a correlation
-plot(data$delta_age~data$BMI,pch=20,xlab="Chronological age (years)",ylab="Delta age")
+plot(data$delta_age~data$BMI,pch=20,xlab="BMI",ylab="Delta age") #RAJ changed xlab to "BMI"
 
 
 ############################################
@@ -76,7 +77,7 @@ cor.test(data$simulated,data$age)
 #As expected, the simulated variable and age have a correlation of 0.6
 
 #We also see that the simulated variable and delta age are strongly, negatively correlated (as is BMI and delta age)
-plot(data$delta_age~data$simulated,xlab="Simulated variable",ylab="Predicted epigenetic age- Chronological age",pch=20)
+plot(data$delta_age~data$simulated,xlab="Simulated variable",ylab="Delta age",pch=20) #RAJ changed ylab to "Delta age" to match previous notation/plots
 cor.test(data$simulated,data$delta_age)
 
 #Finally, using residual epigenetic age (delta age controlling for the age bias in predictions by regressing age out from delta age and taking the residuals),
@@ -110,14 +111,14 @@ for(f in 1:1000){
 #First plot a histogram of the correlation between the simulated variable and delta age (i.e. predicted- chronological age)
 library(scales)
 par(mfrow=c(1,2),pty="s")
-hist(b1[p1>.1],xlab="Pearson's r",breaks=25,main="Simulated variable vs (Predicted age- Chronological age)",
-     xlim=c(min(b1),max(b1)),col=alpha("Black",alpha=.6),ylim=c(0,35))
+hist(b1[p1>.1],xlab="Pearson's r",breaks=25,main="Simulated variable vs Delta age", #RAJ changed main title to say "Delta age"
+     xlim=c(min(b1),max(b1)),col=alpha("Black",alpha=.6),ylim=c(0,50)) #RAJ changed ylim to c(0,50) so as not to cut off hist at top
 par(new=TRUE)
 hist(b1[p1<.05],xlab="Pearson's r",breaks=50,main="",
-     xlim=c(min(b1),max(b1)),col=alpha("Steel Blue",alpha=.6),ylim=c(0,35))
+     xlim=c(min(b1),max(b1)),col=alpha("Steel Blue",alpha=.6),ylim=c(0,50)) #RAJ changed ylim to c(0,50) so as not to cut off hist at top
 par(new=TRUE)
 hist(b1[p1<.1 & p1>.05],xlab="Pearson's r",breaks=5,main="",
-     xlim=c(min(b1),max(b1)),col=alpha("#70869E",alpha=.6),ylim=c(0,35))
+     xlim=c(min(b1),max(b1)),col=alpha("#70869E",alpha=.6),ylim=c(0,50)) #RAJ changed ylim to c(0,50) so as not to cut off hist at top
 #Dashed line indicates the strength of the observed correlation between BMI and delta age
 abline(v=cor(data$BMI,data$delta_age,use="pairwise.complete.obs"),lty=2,lwd=3)
 
@@ -127,13 +128,13 @@ length(which(p1<.05))
 
 #Plot the same results but from when we regress the age structure out of delta age first.
 hist(b2[p2>.1],xlab="Pearson's r",breaks=25,main="Simulated variable vs Residual epi age",
-     xlim=c(min(b2),max(b2)),col=alpha("Black",alpha=.6),ylim=c(0,60))
+     xlim=c(min(b2),max(b2)),col=alpha("Black",alpha=.6),ylim=c(0,80)) #RAJ changed ylim to c(0,80) so as not to cut off hist at top
 par(new=TRUE)
 hist(b2[p2<.05],xlab="Pearson's r",breaks=50,main="",
-     xlim=c(min(b2),max(b2)),col=alpha("Steel Blue",alpha=.6),ylim=c(0,60))
+     xlim=c(min(b2),max(b2)),col=alpha("Steel Blue",alpha=.6),ylim=c(0,80)) #RAJ changed ylim to c(0,80) so as not to cut off hist at top
 par(new=TRUE)
 hist(b2[p2>.05 & p2<.1],xlab="Pearson's r",breaks=25,main="",
-     xlim=c(min(b2),max(b2)),col=alpha("#70869E",alpha=.6),ylim=c(0,60))
+     xlim=c(min(b2),max(b2)),col=alpha("#70869E",alpha=.6),ylim=c(0,80)) #RAJ changed ylim to c(0,80) so as not to cut off hist at top
 #Dashed line indicates the strength of the observed correlation between BMI and residual epi age
 abline(v=cor(data$BMI,data$Residual_epi_age,use="pairwise.complete.obs"),lwd=3,lty=2)
 
