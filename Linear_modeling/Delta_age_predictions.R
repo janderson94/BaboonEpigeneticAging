@@ -132,13 +132,40 @@ cor.test(info$BMI[info$Sex=="M"],
          info$Rank[info$Sex=="M"],use = "pairwise.complete.obs")
 
 
-
-#Build piecewise regression
+#Build piecewise regression to generate age-adjusted BMI
+#Requires segmented and scales packages
 library(segmented)
+library(scales)
 
+info$Age.adjusted.BMI_new<-NA
+info_males<-info[m,]
 
-##Include code for how we get Age.adjusted.BMI #RAJ this needs to be added
-##It is however a slightly stochastic process so use our stored values in info to recreate our exact results
+fit.lm.male<-glm(BMI~Age,family="gaussian",data = info_males)
+
+fit.seg.male<-segmented(fit.lm.male,seg.Z=~Age,psi=8)
+predicted<-predict(object=fit.seg.male,newdata = info_males)
+
+par(mfrow=c(1,1),pty="s")
+#Plot our segmented fit line
+plot.segmented(fit.seg.male,ylim=c(25,60),xlim=c(0,20),xlab="",ylab="")
+par(new=T)
+#Overlay our actual data
+plot(info_males$BMI~info_males$Age,subset = m,col=alpha("Steel Blue",alpha=0.8),pch=20,
+     xlab="Age (years)",ylab="Body Mass Index (Kg/m^2)",main="Males",cex=1.5,ylim=c(25,60),xlim=c(0,20))
+par(new=T)
+#Finally plot our predicted BMI (based on ages) as points
+plot(predicted~info_males$Age,ylim=c(25,60),xlim=c(0,20),xlab="",ylab="")
+
+#Age adjusted BMI is simply the residuals between BMI from the best-fit piecewise model
+info_males$Age.adjusted.BMI_new<-info_males$BMI-predicted
+
+#The correlations between the newly generated age-adjusted BMI is effectively 1. 
+#But there is slight stochasticity in these results
+plot(info_males$Age.adjusted.BMI_new~info_males$Age.adjusted.BMI)
+summary(lm(info_males$Age.adjusted.BMI_new~info_males$Age.adjusted.BMI))
+mean(info_males$Age.adjusted.BMI_new-info_males$Age.adjusted.BMI,na.rm=T)
+
+#We suggest using our stored age-adjusted BMI values in info to recreate our exact results
 
 
 
