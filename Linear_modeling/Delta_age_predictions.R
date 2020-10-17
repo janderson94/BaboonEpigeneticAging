@@ -163,7 +163,7 @@ info_males$Age.adjusted.BMI_new<-info_males$BMI-predicted
 #But there is slight stochasticity in these results
 plot(info_males$Age.adjusted.BMI_new~info_males$Age.adjusted.BMI)
 summary(lm(info_males$Age.adjusted.BMI_new~info_males$Age.adjusted.BMI))
-mean(info_males$Age.adjusted.BMI_new-info_males$Age.adjusted.BMI,na.rm=T)
+mean(abs(info_males$Age.adjusted.BMI_new-info_males$Age.adjusted.BMI),na.rm=T)
 
 #We suggest using our stored age-adjusted BMI values in info to recreate our exact results
 
