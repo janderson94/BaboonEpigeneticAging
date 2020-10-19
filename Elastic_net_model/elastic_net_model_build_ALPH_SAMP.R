@@ -25,8 +25,6 @@ head(epi)
 info<-read.table("./info_for_age_predictions.txt",header=T)
 head(info)
 
-#length(which(colnames(epi2)==info2$Source.File.Name))
-
 ##########################
 #Data Normalization
 ##########################
