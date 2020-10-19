@@ -1,26 +1,31 @@
 #!/usr/bin/env Rscript
 
+
 #############################################################
 #Elastic net model building
 #############################################################
 #Requires
 #R
 #library glmnet
+#Version 2.0.10 used for main manuscript results
+#Newer versions will give very slightly different epigenetic age predictions (e.g. within a few hundredths). 
 
 #This script builds leave-one-out models designed for parallelizing across samples (SAMP) and alpha values (ALPH).
 #Each combination of sample and alpha value becomes it's own R script.
-
 library(glmnet)
 
 #############
 #Read in data
 #############
 #Read in imputed mratios (output from impute.R)
-epi<-read.table("all_methratios_imputed.txt",header=T,row.names=1)
+epi<-read.table("./all_mratios_imputed_450k_n277_cleaned.txt",header=T,row.names=1)
+head(epi)
 
 #Read in metainfo with known chronological ages
-info<-read.table("age_info.txt",header=T)
+info<-read.table("./info_for_age_predictions.txt",header=T)
+head(info)
 
+#length(which(colnames(epi2)==info2$Source.File.Name))
 
 ##########################
 #Data Normalization
@@ -49,8 +54,8 @@ testreads_normalized<-norm_test
 
 #For each CpG site
 for (d in 1:length(testreads_normalized)){
-  #Definte the ECDF from the training data
-  a<-ecdf(norm_train[d,])
+  #Define the ECDF (depending on training sample size, this can be replaced with simply the training data -- norm_train)
+  a<-ecdf(norm_counts[d,])
   #From this ECDF, return the probability of values being less than the training sample
   probs<-a(norm_test[d])
   #To avoid extreme values outside the range of the training samples, give 0's and 1's a manageable quantile (e.g. 0.99 and .01)
@@ -77,5 +82,8 @@ predicted_SAMP<-predict(model,newx=t(testreads_normalized),s="lambda.min")
 weights_SAMP<-unlist(coef(model,lambda="lambda.min"))[,1]
 
 #Write out results for later concatenation
-write.table(predicted_SAMP,"predicted_new/predicted_QQ_n277_ALPH_SAMP.txt",quote=F,row.names=F,col.names=F)
-write.table(weights_SAMP,"weights_new/weights_QQ_n277_ALPH_SAMP.txt",quote=F,row.names=F,col.names=F)
+ifelse(!dir.exists(paths = "./predicted"),dir.create("./predicted"),FALSE)
+ifelse(!dir.exists(paths = "./weights"),dir.create("./weights"),FALSE)
+
+write.table(predicted_SAMP,"./predicted/predicted_QQ_n277_ALPH_SAMP.txt",quote=F,row.names=F,col.names=F)
+write.table(weights_SAMP,"./weights/weights_QQ_n277_ALPH_SAMP.txt",quote=F,row.names=F,col.names=F)
