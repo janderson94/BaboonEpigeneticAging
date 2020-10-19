@@ -1,22 +1,5 @@
 #!/usr/bin/env Rscript
 
-
-##### Exclude #####
-tmp<-read.csv("./Anderson_et_al_2020_NatComm_Supplementary_Tables_1Oct20.csv")
-
-#####################################
-########### Main Results ############
-#####################################
-colnames(tmp)[4]<-"Age"
-colnames(tmp)[6]<-"Rank"
-colnames(tmp)[8]<-"BMI"
-colnames(tmp)[14]<-"Predicted_epi_age"
-colnames(tmp)[15]<-"Predicted_epi_age_n286"
-write.table(tmp,"./SI_table1.csv",quote=F,row.names=F,col.names=T,sep=",")
-
-##### End exclude #####
-
-
 ###################################################################################
 ################################## Main results ###################################
 ###################################################################################
@@ -369,38 +352,6 @@ dif_bmi_no_rank<-info3$bmi_no_rank[seq(2,28,2)]-info3$bmi_no_rank[seq(1,27,2)]
 summary(lm(dif_residual_age~dif_bmi_no_rank))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##################################################################
+###################### End main results ##########################
+##################################################################
