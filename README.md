@@ -1,8 +1,8 @@
 ![Test](./misc/README_temp.JPG)
 
-# Baboon Epigenetic Aging (Anderson and Johnston et al. 2020, _10.7554/eLife.66128_)
+# Baboon Epigenetic Aging (Anderson and Johnston et al. 2021, _eLife_)
 
-This repository holds the code used to analyze the data from, and recreate the results in, _Anderson and Johnston et al. 2021_ (10.7554/eLife.66128). These scripts include:
+This repository holds the code used to analyze the data from, and recreate the results in, _Anderson and Johnston et al. 2021_ (https://doi.org/10.7554/eLife.66128). These scripts include:
 
   (i) Scripts for trimming, mapping, and filtering reduced-representation bisulfite sequencing data (Trim_map_filter).  
   
